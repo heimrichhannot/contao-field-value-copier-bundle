@@ -11,7 +11,7 @@ namespace HeimrichHannot\FieldValueCopierBundle;
 use HeimrichHannot\FieldValueCopierBundle\DependencyInjection\FieldValueCopierExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class HeimrichHannotContaoFieldValueCopierBundle extends Bundle
+class ContaoFieldValueCopierBundle extends Bundle
 {
     /**
      * {@inheritdoc}
