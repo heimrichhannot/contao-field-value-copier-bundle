@@ -1,0 +1,13 @@
+services:
+  _instanceof:
+    Contao\CoreBundle\Framework\FrameworkAwareInterface:
+      calls:
+      - ["setFramework", ["@contao.framework"]]
+    Symfony\Component\DependencyInjection\ContainerAwareInterface:
+      calls:
+      - ["setContainer", ["@service_container"]]
+
+  huh.field_value_copier.util.field_value_copier_util:
+    class: HeimrichHannot\FieldValueCopierBundle\Util\FieldValueCopierUtil
+    public: true
+    autowire: true
