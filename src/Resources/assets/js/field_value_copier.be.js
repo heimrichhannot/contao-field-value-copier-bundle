@@ -10,7 +10,7 @@ class FieldValueCopierBundle {
                     return;
                 }
 
-                let siblingSelect = Array.prototype.filter.call(item.parentNode.children, function(child){
+                let siblingSelect = Array.prototype.filter.call(item.parentNode.parentNode.children, function(child){
                     return child !== item && child.tagName.toLowerCase() === 'select';
                 });
 
