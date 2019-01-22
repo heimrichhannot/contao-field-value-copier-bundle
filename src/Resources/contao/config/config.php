@@ -10,6 +10,6 @@ $GLOBALS['BE_FFL']['fieldValueCopier'] = 'HeimrichHannot\FieldValueCopierBundle\
  */
 if (TL_MODE == 'BE')
 {
-    $GLOBALS['TL_JAVASCRIPT']['jquery.field_value_copier.js'] = 'system/modules/field_value_copier/assets/js/jquery.field_value_copier.js';
-    $GLOBALS['TL_CSS']['field_value_copier'] = 'system/modules/field_value_copier/assets/css/field_value_copier.css';
+    $GLOBALS['TL_JAVASCRIPT']['jquery.field_value_copier.js'] = 'bundles/contaofieldvaluecopier/js/field_value_copier.be.js';
+//    $GLOBALS['TL_CSS']['field_value_copier'] = 'system/modules/field_value_copier/assets/css/field_value_copier.css';
 }

@@ -9,38 +9,14 @@ class FieldValueCopierBundle {
                 }
 
                 if (confirm(item.getAttribute('data-confirm'))) {
-                    let siblingSelect = Array.prototype.filter.call(el.parentNode.children, function(child){
-                        return child !== el;
+                    let siblingSelect = Array.prototype.filter.call(item.parentNode.children, function(child){
+                        return child !== item && child.tagName.toLowerCase() === 'select';
                     });
 
-                    window.location.href = item.getAttribute('href') + '&fieldValue=' + siblingSelect.value;
+                    window.location.href = item.getAttribute('href') + '&fieldValue=' + siblingSelect[0].value;
                 }
             });
         });
-
-        // the mootools part
-        var $select = $$('.field-value-copier select');
-
-        if ($select.length <= 0)
-            return;
-
-        $select = $select[0];
-
-        function checkSelect($select) {
-            if ($select.selectedIndex <= 0) {
-                $select.getAllNext('a.tl_submit').addClass('disabled');
-            } else {
-                $select.getAllNext('a.tl_submit').removeClass('disabled');
-            }
-        }
-
-        if ($select != null) {
-            checkSelect($select);
-
-            $select.addEvent('change', function(event) {
-                checkSelect(this);
-            });
-        }
     }
 }
 

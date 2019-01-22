@@ -8,18 +8,25 @@ This simple module offers a backend dca input type for showing a giving the user
 
 ### Technical instructions
 
-Use the inputType "fieldValueCopier" for your field.
+Add the following to the relevant DCA:
 
 ```
-'someField' => array(
+'complexFieldCopier' => [
     // no label necessary
     'inputType' => 'fieldValueCopier',
-    'eval'      => array(
-        'fieldValueCopier' => array(
-            'table' => 'tl_my_dca',
-            'field' => 'myField',
-            'options_callback' => array('Namespace\SomeClass', 'getOptions')
-        )
-    )
-)
+    'eval'      => [
+        'fieldValueCopier' => [
+            'table'            => 'tl_my_dca',
+            'field'            => 'complexField',
+            'config' => [
+                // here all available config parameters found in \HeimrichHannot\UtilsBundle\Choice\ModelInstanceChoice::collect() are possible
+                'labelPattern' => '%title% (ID %id%)' // all of the dca's fields can be used here
+            ],
+            'options_callback' => ['huh.field_value_copier.util.field_value_copier_util', 'getOptions']
+        ]
+    ]
+],
+'complexField' => [
+    // ...
+]
 ```

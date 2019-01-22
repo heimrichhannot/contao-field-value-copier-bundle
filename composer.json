@@ -42,6 +42,9 @@
   "config": {
     "preferred-install": "dist"
   },
+  "replace": {
+    "heimrichhannot/contao-field_value_copier": "*"
+  },
   "extra": {
     "contao-manager-plugin": "HeimrichHannot\\FieldValueCopierBundle\\ContaoManager\\Plugin",
     "foxy": true

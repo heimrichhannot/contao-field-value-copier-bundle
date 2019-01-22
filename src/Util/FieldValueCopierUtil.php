@@ -49,21 +49,13 @@ class FieldValueCopierUtil implements FrameworkAwareInterface, ContainerAwareInt
             throw new \Exception("No 'table' set in $dc->table.$dc->field's eval array.");
         }
 
-        if (null === ($items = $this->container->get('huh.utils.model')->findModelInstancesBy(
-                $dca['eval']['fieldValueCopier']['table'],
-                $dca['eval']['fieldValueCopier']['column'] ?: [],
-                $dca['eval']['fieldValueCopier']['value'] ?: [],
-                $dca['eval']['fieldValueCopier']['options'] ?: []
-            )))
-        {
-            return [];
-        }
+        $config = [
+            'dataContainer' => $dca['eval']['fieldValueCopier']['table']
+        ];
 
-        $label = $GLOBALS['TL_LANG']['MSC']['tl_field_value_copier']['record'];
+        $config += $dca['eval']['fieldValueCopier']['config'] ?: [];
 
-        $options = array_combine($items->fetchEach('id'), array_map(function ($val) use ($label) {
-            return $label . $val;
-        }, $items->fetchEach('id')));
+        $options = System::getContainer()->get('huh.utils.choice.model_instance')->getChoices($config);
 
         // remove the item itself
         unset($options[$dc->id]);
