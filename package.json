@@ -4,6 +4,9 @@
   "description": "This simple module offers a backend dca input type for showing a giving the user the opportunity to copy a certain dca's field value from one record to another in Contao CMS.",
   "author": "Heimrich & Hannot GmbH <digitales@heimrich-hannot.de>",
   "license": "LGPL-3.0-or-later",
+  "dependencies": {
+    "contao-utils-bundle": "^1.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.2",
     "@babel/core": "^7.2",

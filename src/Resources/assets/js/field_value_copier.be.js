@@ -1,3 +1,5 @@
+import utilsBundle from 'contao-utils-bundle';
+
 class FieldValueCopierBundle {
     static init() {
         document.querySelectorAll('.field-value-copier .load').forEach(function(item) {
@@ -8,12 +10,12 @@ class FieldValueCopierBundle {
                     return;
                 }
 
-                if (confirm(item.getAttribute('data-confirm'))) {
-                    let siblingSelect = Array.prototype.filter.call(item.parentNode.children, function(child){
-                        return child !== item && child.tagName.toLowerCase() === 'select';
-                    });
+                let siblingSelect = Array.prototype.filter.call(item.parentNode.children, function(child){
+                    return child !== item && child.tagName.toLowerCase() === 'select';
+                });
 
-                    window.location.href = item.getAttribute('href') + '&fieldValue=' + siblingSelect[0].value;
+                if (utilsBundle.util.isTruthy(siblingSelect[0].value) && siblingSelect[0].value != '' && confirm(item.getAttribute('data-confirm'))) {
+                    window.location.href = utilsBundle.url.addParameterToUri(item.getAttribute('href'), 'fieldValue', siblingSelect[0].value);
                 }
             });
         });
