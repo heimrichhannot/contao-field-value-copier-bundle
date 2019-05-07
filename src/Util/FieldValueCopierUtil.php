@@ -8,35 +8,28 @@
 
 namespace HeimrichHannot\FieldValueCopierBundle\Util;
 
-use Contao\BackendUser;
-use Contao\Calendar;
-use Contao\Controller;
-use Contao\CoreBundle\Exception\AccessDeniedException;
-use Contao\CoreBundle\Framework\FrameworkAwareInterface;
-use Contao\CoreBundle\Framework\FrameworkAwareTrait;
-use Contao\Database;
 use Contao\DataContainer;
-use Contao\Date;
-use Contao\Image;
-use Contao\Input;
-use Contao\StringUtil;
-use Contao\System;
-use Contao\Versions;
 use HeimrichHannot\EventsBundle\Model\CalendarEventsModel;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class FieldValueCopierUtil implements FrameworkAwareInterface, ContainerAwareInterface
+class FieldValueCopierUtil
 {
-    use FrameworkAwareTrait;
-    use ContainerAwareTrait;
 
     /**
      * @var ContainerInterface
      */
     protected $container;
 
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
+    /**
+     * @param DataContainer $dc
+     * @return array
+     * @throws \Exception
+     */
     public function getOptions(DataContainer $dc)
     {
         if (!($table = $dc->table) || !($field = $dc->field)) {
@@ -55,7 +48,7 @@ class FieldValueCopierUtil implements FrameworkAwareInterface, ContainerAwareInt
 
         $config += $dca['eval']['fieldValueCopier']['config'] ?: [];
 
-        $options = System::getContainer()->get('huh.utils.choice.model_instance')->getChoices($config);
+        $options = $this->container->get('huh.utils.choice.model_instance')->getChoices($config);
 
         // remove the item itself
         unset($options[$dc->id]);

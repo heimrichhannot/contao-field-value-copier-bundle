@@ -12,9 +12,12 @@ use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
+use Contao\ManagerPlugin\Config\ConfigPluginInterface;
+use Contao\ManagerPlugin\Config\ExtensionPluginInterface;
 use HeimrichHannot\FieldValueCopierBundle\ContaoFieldValueCopierBundle;
+use Symfony\Component\Config\Loader\LoaderInterface;
 
-class Plugin implements BundlePluginInterface
+class Plugin implements BundlePluginInterface, ConfigPluginInterface
 {
     /**
      * {@inheritdoc}
@@ -24,5 +27,13 @@ class Plugin implements BundlePluginInterface
         return [
             BundleConfig::create(ContaoFieldValueCopierBundle::class)->setLoadAfter([ContaoCoreBundle::class]),
         ];
+    }
+
+    /**
+     * Allows a plugin to load container configuration.
+     */
+    public function registerContainerConfiguration(LoaderInterface $loader, array $managerConfig)
+    {
+        $loader->load('@ContaoFieldValueCopierBundle/Resources/config/services.yml');
     }
 }

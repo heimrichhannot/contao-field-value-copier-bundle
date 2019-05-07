@@ -3,11 +3,15 @@
 namespace HeimrichHannot\FieldValueCopierBundle\Widget;
 
 
-use HeimrichHannot\Haste\Dca\General;
-use HeimrichHannot\Haste\Util\Url;
-use HeimrichHannot\Haste\Util\Widget;
+use Contao\BackendTemplate;
+use Contao\Controller;
+use Contao\Database;
+use Contao\Input;
+use Contao\System;
+use Contao\Widget;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class FieldValueCopierWidget extends \Widget
+class FieldValueCopierWidget extends Widget
 {
 
     protected $blnForAttribute   = true;
@@ -15,11 +19,16 @@ class FieldValueCopierWidget extends \Widget
     protected $strEditorTemplate = 'field_value_copier';
     protected $arrDca;
     protected $arrWidgetErrors   = [];
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
 
     public function __construct($arrData)
     {
-        \Controller::loadDataContainer($arrData['strTable']);
+        Controller::loadDataContainer($arrData['strTable']);
         $this->arrDca = $GLOBALS['TL_DCA'][$arrData['strTable']]['fields'][$arrData['strField']]['eval']['fieldValueCopier'];
+        $this->container = System::getContainer();
 
         parent::__construct($arrData);
     }
@@ -32,37 +41,36 @@ class FieldValueCopierWidget extends \Widget
      */
     public function generate()
     {
-        $objTemplate        = new \BackendTemplate($this->strEditorTemplate);
+        $objTemplate        = new BackendTemplate($this->strEditorTemplate);
         $objTemplate->class = $this->arrDca['class'];
 
-        \Controller::loadDataContainer('tl_field_value_copier');
-        \System::loadLanguageFile('tl_field_value_copier');
+        Controller::loadDataContainer('tl_field_value_copier');
+        Controller::loadLanguageFile('tl_field_value_copier');
 
-        if ($strFieldValue = \Input::get('fieldValue')) {
-            $objItem = General::getModelInstance($this->arrDca['table'], $strFieldValue);
+        if ($strFieldValue = Input::get('fieldValue')) {
+            $objItem = $this->container->get('huh.utils.model')->findModelInstanceByPk($this->arrDca['table'], $strFieldValue);
 
             if ($objItem !== null) {
                 $strFieldname = $this->arrDca['field'];
 
                 // usage of model not possible since \DataContainer::save() is protected and not callable from here
-                \Database::getInstance()->prepare("UPDATE $this->strTable SET $strFieldname = ? WHERE id=?")->execute(
+                Database::getInstance()->prepare("UPDATE $this->strTable SET $strFieldname = ? WHERE id=?")->execute(
                     $objItem->{$strFieldname},
                     $this->objDca->id
                 );
             }
 
-            \Controller::redirect(Url::removeQueryString(['fieldValue']));
+            Controller::redirect($this->container->get('huh.utils.url')->removeQueryString(['fieldValue']));
         }
 
         $arrField = $GLOBALS['TL_DCA']['tl_field_value_copier']['fields']['fieldValueCopier'];
 
         $arrField['label'][0]         =
-            sprintf($arrField['label'][0], General::getLocalizedFieldname($this->arrDca['field'], $this->arrDca['table']));
+            sprintf($arrField['label'][0], $this->container->get('huh.utils.dca')->getLocalizedFieldName($this->arrDca['field'], $this->arrDca['table']));
         $arrField['options_callback'] = $this->arrDca['options_callback'];
 
-        $objTemplate->fieldValueCopier = Widget::getBackendFormField($this->strName, $arrField, null, $this->strName, $this->strTable, $this->objDca);
+        $objTemplate->fieldValueCopier = $this->container->get('huh.utils.form')->getBackendFormField($this->strName, $arrField, null, $this->strName, $this->strTable, $this->objDca);
 
         return $objTemplate->parse();
     }
-
 }
