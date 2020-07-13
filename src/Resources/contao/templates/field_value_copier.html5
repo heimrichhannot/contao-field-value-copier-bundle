@@ -1,4 +1,4 @@
-<div class="field-value-copier clr<?php if ($this->class): ?> <?= $this->class ?>"<?php endif; ?>">
+<div class="field-value-copier clr<?php if ($this->class): ?> <?= $this->class ?><?php endif; ?>" data-field="<?= $this->baseField ?>">
     <?= $this->fieldValueCopier->parse(); ?>
 
     <div>

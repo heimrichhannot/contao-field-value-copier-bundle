@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2020-07-13
+- fixed support for multiple field value copiers in one palette
+
 ## [1.1.0] - 2019-05-07
 
 ### Fixed

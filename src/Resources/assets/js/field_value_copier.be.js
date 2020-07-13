@@ -12,10 +12,11 @@ class FieldValueCopierBundle {
 
                 let siblingSelect = Array.prototype.filter.call(item.parentNode.parentNode.children, function(child){
                     return child !== item && child.tagName.toLowerCase() === 'select';
-                });
+                }), url;
 
                 if (utilsBundle.util.isTruthy(siblingSelect[0].value) && siblingSelect[0].value != '' && confirm(item.getAttribute('data-confirm'))) {
-                    window.location.href = utilsBundle.url.addParameterToUri(item.getAttribute('href'), 'fieldValue', siblingSelect[0].value);
+                    url = utilsBundle.url.addParameterToUri(item.getAttribute('href'), 'fieldName', item.closest('.field-value-copier').getAttribute('data-field'));
+                    window.location.href = utilsBundle.url.addParameterToUri(url, 'fieldValue', siblingSelect[0].value);
                 }
             });
         });

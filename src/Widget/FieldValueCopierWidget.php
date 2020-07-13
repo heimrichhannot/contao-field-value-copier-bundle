@@ -47,12 +47,10 @@ class FieldValueCopierWidget extends Widget
         Controller::loadDataContainer('tl_field_value_copier');
         Controller::loadLanguageFile('tl_field_value_copier');
 
-        if ($strFieldValue = Input::get('fieldValue')) {
+        if (($strFieldValue = Input::get('fieldValue')) && ($this->arrDca['field'] === ($strFieldname = Input::get('fieldName')))) {
             $objItem = $this->container->get('huh.utils.model')->findModelInstanceByPk($this->arrDca['table'], $strFieldValue);
 
             if ($objItem !== null) {
-                $strFieldname = $this->arrDca['field'];
-
                 // usage of model not possible since \DataContainer::save() is protected and not callable from here
                 Database::getInstance()->prepare("UPDATE $this->strTable SET $strFieldname = ? WHERE id=?")->execute(
                     $objItem->{$strFieldname},
@@ -60,16 +58,17 @@ class FieldValueCopierWidget extends Widget
                 );
             }
 
-            Controller::redirect($this->container->get('huh.utils.url')->removeQueryString(['fieldValue']));
+            Controller::redirect($this->container->get('huh.utils.url')->removeQueryString(['fieldValue', 'fieldName']));
         }
 
         $arrField = $GLOBALS['TL_DCA']['tl_field_value_copier']['fields']['fieldValueCopier'];
 
         $arrField['label'][0]         =
-            sprintf($arrField['label'][0], $this->container->get('huh.utils.dca')->getLocalizedFieldName($this->arrDca['field'], $this->arrDca['table']));
+            sprintf($GLOBALS['TL_LANG']['MSC']['tl_field_value_copier']['fieldValueCopierLabel'], $this->container->get('huh.utils.dca')->getLocalizedFieldName($this->arrDca['field'], $this->arrDca['table']));
         $arrField['options_callback'] = $this->arrDca['options_callback'];
 
         $objTemplate->fieldValueCopier = $this->container->get('huh.utils.form')->getBackendFormField($this->strName, $arrField, null, $this->strName, $this->strTable, $this->objDca);
+        $objTemplate->baseField = $this->arrDca['field'];
 
         return $objTemplate->parse();
     }
