@@ -1,7 +1,12 @@
 <?php
 
-namespace HeimrichHannot\FieldValueCopierBundle\Widget;
+/*
+ * Copyright (c) 2020 Heimrich & Hannot GmbH
+ *
+ * @license LGPL-3.0-or-later
+ */
 
+namespace HeimrichHannot\FieldValueCopierBundle\Widget;
 
 use Contao\BackendTemplate;
 use Contao\Controller;
@@ -13,12 +18,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FieldValueCopierWidget extends Widget
 {
-
-    protected $blnForAttribute   = true;
-    protected $strTemplate       = 'be_widget_chk';
+    protected $blnForAttribute = true;
+    protected $strTemplate = 'be_widget_chk';
     protected $strEditorTemplate = 'field_value_copier';
     protected $arrDca;
-    protected $arrWidgetErrors   = [];
+    protected $arrWidgetErrors = [];
     /**
      * @var ContainerInterface
      */
@@ -33,15 +37,14 @@ class FieldValueCopierWidget extends Widget
         parent::__construct($arrData);
     }
 
-
     /**
-     * Generate the widget and return it as string
+     * Generate the widget and return it as string.
      *
      * @return string
      */
     public function generate()
     {
-        $objTemplate        = new BackendTemplate($this->strEditorTemplate);
+        $objTemplate = new BackendTemplate($this->strEditorTemplate);
         $objTemplate->class = $this->arrDca['class'];
 
         Controller::loadDataContainer('tl_field_value_copier');
@@ -50,7 +53,7 @@ class FieldValueCopierWidget extends Widget
         if (($strFieldValue = Input::get('fieldValue')) && ($this->arrDca['field'] === ($strFieldname = Input::get('fieldName')))) {
             $objItem = $this->container->get('huh.utils.model')->findModelInstanceByPk($this->arrDca['table'], $strFieldValue);
 
-            if ($objItem !== null) {
+            if (null !== $objItem) {
                 // usage of model not possible since \DataContainer::save() is protected and not callable from here
                 Database::getInstance()->prepare("UPDATE $this->strTable SET $strFieldname = ? WHERE id=?")->execute(
                     $objItem->{$strFieldname},
@@ -63,7 +66,7 @@ class FieldValueCopierWidget extends Widget
 
         $arrField = $GLOBALS['TL_DCA']['tl_field_value_copier']['fields']['fieldValueCopier'];
 
-        $arrField['label'][0]         =
+        $arrField['label'][0] =
             sprintf($GLOBALS['TL_LANG']['MSC']['tl_field_value_copier']['fieldValueCopierLabel'], $this->container->get('huh.utils.dca')->getLocalizedFieldName($this->arrDca['field'], $this->arrDca['table']));
         $arrField['options_callback'] = $this->arrDca['options_callback'];
 

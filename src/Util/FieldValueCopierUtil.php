@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2018 Heimrich & Hannot GmbH
+ * Copyright (c) 2020 Heimrich & Hannot GmbH
  *
  * @license LGPL-3.0-or-later
  */
@@ -9,12 +9,10 @@
 namespace HeimrichHannot\FieldValueCopierBundle\Util;
 
 use Contao\DataContainer;
-use HeimrichHannot\EventsBundle\Model\CalendarEventsModel;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FieldValueCopierUtil
 {
-
     /**
      * @var ContainerInterface
      */
@@ -26,9 +24,9 @@ class FieldValueCopierUtil
     }
 
     /**
-     * @param DataContainer $dc
-     * @return array
      * @throws \Exception
+     *
+     * @return array
      */
     public function getOptions(DataContainer $dc)
     {
@@ -43,7 +41,7 @@ class FieldValueCopierUtil
         }
 
         $config = [
-            'dataContainer' => $dca['eval']['fieldValueCopier']['table']
+            'dataContainer' => $dca['eval']['fieldValueCopier']['table'],
         ];
 
         $config += $dca['eval']['fieldValueCopier']['config'] ?: [];
