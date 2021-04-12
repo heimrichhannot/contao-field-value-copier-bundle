@@ -1,4 +1,4 @@
-import utilsBundle from 'contao-utils-bundle';
+import utilsBundle from '@hundh/contao-utils-bundle';
 
 class FieldValueCopierBundle {
     static init() {

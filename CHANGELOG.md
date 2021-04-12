@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2021-04-12
+- use @hundh/contao-utils-bundle instead of contao-utils-bundle
+
 ## [1.1.1] - 2020-07-13
 - fixed support for multiple field value copiers in one palette
 
