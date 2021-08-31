@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2021-08-31
+
+- Added: support for php 8
+
 ## [1.2.0] - 2021-04-12
 - use @hundh/contao-utils-bundle instead of contao-utils-bundle
 
