@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.3.1] - 2022-02-14
+
+- Fixed: array index issues in php 8+
+
 ## [1.3.0] - 2021-08-31
 
 - Added: support for php 8

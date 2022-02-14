@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2020 Heimrich & Hannot GmbH
+ * Copyright (c) 2022 Heimrich & Hannot GmbH
  *
  * @license LGPL-3.0-or-later
  */
@@ -45,7 +45,7 @@ class FieldValueCopierWidget extends Widget
     public function generate()
     {
         $objTemplate = new BackendTemplate($this->strEditorTemplate);
-        $objTemplate->class = $this->arrDca['class'];
+        $objTemplate->class = $this->arrDca['class'] ?? null;
 
         Controller::loadDataContainer('tl_field_value_copier');
         Controller::loadLanguageFile('tl_field_value_copier');
