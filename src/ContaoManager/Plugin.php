@@ -21,7 +21,7 @@ class Plugin implements BundlePluginInterface, ConfigPluginInterface
     /**
      * {@inheritdoc}
      */
-    public function getBundles(ParserInterface $parser)
+    public function getBundles(ParserInterface $parser): array
     {
         return [
             BundleConfig::create(ContaoFieldValueCopierBundle::class)->setLoadAfter([ContaoCoreBundle::class]),
@@ -30,8 +30,10 @@ class Plugin implements BundlePluginInterface, ConfigPluginInterface
 
     /**
      * Allows a plugin to load container configuration.
+     *
+     * @throws \Exception
      */
-    public function registerContainerConfiguration(LoaderInterface $loader, array $managerConfig)
+    public function registerContainerConfiguration(LoaderInterface $loader, array $managerConfig): void
     {
         $loader->load('@ContaoFieldValueCopierBundle/Resources/config/services.yml');
     }

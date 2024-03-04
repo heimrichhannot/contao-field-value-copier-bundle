@@ -1,6 +1,10 @@
 <?php
 
-if (!System::getContainer()->get(HeimrichHannot\UtilsBundle\Util\Utils::class)->container()->isInstall()) {
+use Contao\System;
+use HeimrichHannot\UtilsBundle\Util\Utils;
+
+if (!System::getContainer()->get(Utils::class)->container()->isInstall())
+{
     $GLOBALS['TL_DCA']['tl_field_value_copier'] = [
         'fields' => [
             'fieldValueCopier' => [

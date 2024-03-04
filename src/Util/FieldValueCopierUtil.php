@@ -9,6 +9,7 @@
 namespace HeimrichHannot\FieldValueCopierBundle\Util;
 
 use Contao\DataContainer;
+use Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FieldValueCopierUtil
@@ -16,7 +17,7 @@ class FieldValueCopierUtil
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    protected ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {
@@ -24,20 +25,20 @@ class FieldValueCopierUtil
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      *
      * @return array
      */
-    public function getOptions(DataContainer $dc)
+    public function getOptions(DataContainer $dc): array
     {
-        if (!($table = $dc->table) || !($field = $dc->field)) {
+        if (!($table = $dc->table) || !$dc->field) {
             return [];
         }
 
         $dca = $GLOBALS['TL_DCA'][$table]['fields'][$dc->field];
 
         if (!isset($dca['eval']['fieldValueCopier']['table'])) {
-            throw new \Exception("No 'table' set in $dc->table.$dc->field's eval array.");
+            throw new Exception("No 'table' set in $dc->table.$dc->field's eval array.");
         }
 
         $config = [

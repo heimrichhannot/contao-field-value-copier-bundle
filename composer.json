@@ -4,9 +4,9 @@
   "description": "This simple module offers a backend dca input type for showing a giving the user the opportunity to copy a certain dca's field value from one record to another in Contao CMS.",
   "license": "LGPL-3.0-or-later",
   "require": {
-    "php": "^7.1||^8.0",
-    "contao/core-bundle": "^4.4",
-    "heimrichhannot/contao-utils-bundle": "^2.95"
+    "php": "^7.4 || ^8.0",
+    "contao/core-bundle": "^4.13 || ^5.0",
+    "heimrichhannot/contao-utils-bundle": "^2.95 || ^3.0"
   },
   "autoload": {
     "psr-4": {

@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## prep [1.4.0] - 2024-03-04
+
+- Added: support for contao 5
+
 ## [1.3.2] - 2022-03-23
 
 - Fixed: install tool issue in contao 4.13

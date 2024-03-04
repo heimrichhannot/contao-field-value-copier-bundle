@@ -20,13 +20,10 @@ class FieldValueCopierWidget extends Widget
 {
     protected $blnForAttribute = true;
     protected $strTemplate = 'be_widget_chk';
-    protected $strEditorTemplate = 'field_value_copier';
+    protected string $strEditorTemplate = 'field_value_copier';
     protected $arrDca;
-    protected $arrWidgetErrors = [];
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    protected array $arrWidgetErrors = [];
+    protected ContainerInterface $container;
 
     public function __construct($arrData)
     {
