@@ -47,7 +47,7 @@ class FieldValueCopierUtil
 
         $config += $dca['eval']['fieldValueCopier']['config'] ?: [];
 
-        $options = $this->container->get('huh.utils.choice.model_instance')->getChoices($config);
+        $options = $this->container->get('huh.utils.choice.model_instance')->getChoices($config);  # todo: polyfill
 
         // remove the item itself
         unset($options[$dc->id]);
