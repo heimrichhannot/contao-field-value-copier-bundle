@@ -1,4 +1,12 @@
 services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  HeimrichHannot\FieldValueCopierBundle\:
+    resource: '../../{Util}/*'
+    public: true
 
   huh.field_value_copier.util.field_value_copier_util:
     class: HeimrichHannot\FieldValueCopierBundle\Util\FieldValueCopierUtil
