@@ -192,12 +192,8 @@ class ModelInstanceChoicePolyfill
                 $label = preg_replace_callback(
                     '@%([^%]+)%@i',
                     function ($matches) use ($instances, $dca, $context, $dc) {
-                        return System::getContainer()->get(Utils::class)->form()
-                            ->prepareSpecialValueForOutput(
-                                $matches[1],
-                                $instances->{$matches[1]},
-                                $dc
-                            );
+                        return System::getContainer()->get(Utils::class)->formatter()
+                            ->formatDcaFieldValue($dc, $matches[1], $instances->{$matches[1]});
                     },
                     $labelPattern
                 );
@@ -211,10 +207,10 @@ class ModelInstanceChoicePolyfill
                 );
             }
 
-            $callbackLabel = Polyfill::getConfigByArrayOrCallbackOrFunction($context, 'label', [$label, $instances->row(), $context]);
-            if (null !== $callbackLabel) {
-                $label = $callbackLabel;
-            }
+            $utils = System::getContainer()->get(Utils::class);
+            $label = $context['label']
+                ?? $utils->dca()->executeCallback($context['label_callback'] ?? null, [$label, $instances->row(), $context])
+                ?? $label;
 
             $choices[$instances->id] = $label;
         }

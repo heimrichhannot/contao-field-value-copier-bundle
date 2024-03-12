@@ -59,7 +59,9 @@ class FieldValueCopierWidget extends Widget
                     ->execute($objItem->{$strFieldName}, $this->objDca->id);
             }
 
-            Controller::redirect(Polyfill::removeQueryString(['fieldValue', 'fieldName']));
+            $utils = System::getContainer()->get(Utils::class);
+
+            Controller::redirect($utils->url()->removeQueryStringParameterFromUrl(['fieldName','fieldValue']));
         }
 
         $arrField = $GLOBALS['TL_DCA']['tl_field_value_copier']['fields']['fieldValueCopier'];
