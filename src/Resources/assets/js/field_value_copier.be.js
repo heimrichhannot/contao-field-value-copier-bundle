@@ -1,5 +1,3 @@
-import utilsBundle from '@hundh/contao-utils-bundle';
-
 class FieldValueCopierBundle {
     static init() {
         document.querySelectorAll('.field-value-copier .load').forEach(function(item) {
@@ -10,16 +8,65 @@ class FieldValueCopierBundle {
                     return;
                 }
 
-                let siblingSelect = Array.prototype.filter.call(item.parentNode.parentNode.children, function(child){
-                    return child !== item && child.tagName.toLowerCase() === 'select';
-                }), url;
+                let siblingSelect = item.closest('.field-value-copier').querySelector('select');
 
-                if (utilsBundle.util.isTruthy(siblingSelect[0].value) && siblingSelect[0].value != '' && confirm(item.getAttribute('data-confirm'))) {
-                    url = utilsBundle.url.addParameterToUri(item.getAttribute('href'), 'fieldName', item.closest('.field-value-copier').getAttribute('data-field'));
-                    window.location.href = utilsBundle.url.addParameterToUri(url, 'fieldValue', siblingSelect[0].value);
+                if (siblingSelect.value != '' && confirm(item.getAttribute('data-confirm'))) {
+                    let url = FieldValueCopierBundle.addParameterToUri(item.getAttribute('href'), 'fieldName', item.closest('.field-value-copier').getAttribute('data-field'));
+                    window.location.href = FieldValueCopierBundle.addParameterToUri(url, 'fieldValue', siblingSelect.value);
                 }
             });
         });
+    }
+
+    static addParameterToUri(uri, key, value)
+    {
+        if (!uri)
+        {
+            uri = window.location.href;
+        }
+
+        let re = new RegExp("([?&])" + key + "=.*?(&|#|$)(.*)", "gi"),
+            hash;
+
+        if (re.test(uri))
+        {
+            if (typeof value !== 'undefined' && value !== null)
+            {
+                return uri.replace(re, '$1' + key + "=" + value + '$2$3');
+            }
+            else
+            {
+                hash = uri.split('#');
+                uri = hash[0].replace(re, '$1$3').replace(/(&|\?)$/, '');
+
+                if (typeof hash[1] !== 'undefined' && hash[1] !== null)
+                {
+                    uri += '#' + hash[1];
+                }
+
+                return uri;
+            }
+        }
+        else
+        {
+            if (typeof value !== 'undefined' && value !== null)
+            {
+                let separator = uri.indexOf('?') !== -1 ? '&' : '?';
+                hash = uri.split('#');
+                uri = hash[0] + separator + key + '=' + value;
+
+                if (typeof hash[1] !== 'undefined' && hash[1] !== null)
+                {
+                    uri += '#' + hash[1];
+                }
+
+                return uri;
+            }
+            else
+            {
+                return uri;
+            }
+        }
     }
 }
 
