@@ -46,7 +46,8 @@ class FieldValueCopierWidget extends Widget
         $objTemplate = new BackendTemplate($this->strEditorTemplate);
         $objTemplate->class = $this->arrDca['class'] ?? null;
 
-        Controller::loadDataContainer('tl_field_value_copier');
+        $GLOBALS['TL_JAVASCRIPT']['jquery.field_value_copier.js'] = 'bundles/contaofieldvaluecopier/js/field_value_copier.be.js';
+
         Controller::loadLanguageFile('tl_field_value_copier');
 
         if (($strFieldValue = Input::get('fieldValue')) && ($this->arrDca['field'] === ($strFieldName = Input::get('fieldName')))) {
@@ -64,7 +65,11 @@ class FieldValueCopierWidget extends Widget
             Controller::redirect($utils->url()->removeQueryStringParameterFromUrl(['fieldName','fieldValue']));
         }
 
-        $arrField = $GLOBALS['TL_DCA']['tl_field_value_copier']['fields']['fieldValueCopier'];
+        $arrField = [
+            'exclude'   => true,
+            'inputType' => 'select',
+            'eval'      => ['tl_class' => 'long', 'chosen' => true, 'includeBlankOption' => true],
+        ];
 
         $arrField['label'][0] = sprintf(
             $GLOBALS['TL_LANG']['MSC']['tl_field_value_copier']['fieldValueCopierLabel'],

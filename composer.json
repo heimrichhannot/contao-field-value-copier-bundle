@@ -6,30 +6,17 @@
   "require": {
     "php": "^7.4 || ^8.0",
     "contao/core-bundle": "^4.13 || ^5.0",
-    "heimrichhannot/contao-utils-bundle": "^2.95 || ^3.0"
+    "heimrichhannot/contao-utils-bundle": "^2.242 || ^3.8"
   },
   "autoload": {
     "psr-4": {
       "HeimrichHannot\\FieldValueCopierBundle\\": "src/"
-    },
-    "classmap": [
-      "src/"
-    ],
-    "exclude-from-classmap": [
-      "src/Resources/contao/config/",
-      "src/Resources/contao/dca/",
-      "src/Resources/contao/languages/",
-      "src/Resources/contao/templates/"
-    ]
-  },
-  "config": {
-    "preferred-install": "dist"
+    }
   },
   "replace": {
     "heimrichhannot/contao-field_value_copier": "*"
   },
   "extra": {
     "contao-manager-plugin": "HeimrichHannot\\FieldValueCopierBundle\\ContaoManager\\Plugin",
-    "foxy": true
   }
 }
