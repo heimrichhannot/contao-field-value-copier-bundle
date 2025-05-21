@@ -1,8 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## prep [1.4.0] - 2024-03-04
-
+## [1.4.0] - 2025-05-21
 - Added: support for contao 5
 
 ## [1.3.2] - 2022-03-23

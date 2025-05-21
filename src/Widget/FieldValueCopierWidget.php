@@ -65,7 +65,9 @@ class FieldValueCopierWidget extends Widget
 
             $utils = System::getContainer()->get(Utils::class);
 
-            Controller::redirect($utils->url()->removeQueryStringParameterFromUrl(['fieldName', 'fieldValue']));
+            $url = $utils->url()->removeQueryStringParameterFromUrl('fieldName');
+            $url = $utils->url()->removeQueryStringParameterFromUrl('fieldValue', $url);
+            Controller::redirect($url);
         }
 
         $arrField = [
