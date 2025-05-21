@@ -21,10 +21,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class FieldValueCopierWidget extends Widget
 {
     protected $blnForAttribute = true;
+
     protected $strTemplate = 'be_widget_chk';
+
     protected string $strEditorTemplate = 'field_value_copier';
+
     protected $arrDca;
+
     protected array $arrWidgetErrors = [];
+
     protected ContainerInterface $container;
 
     public function __construct($arrData)
@@ -38,8 +43,6 @@ class FieldValueCopierWidget extends Widget
 
     /**
      * Generate the widget and return it as string.
-     *
-     * @return string
      */
     public function generate(): string
     {
@@ -62,13 +65,17 @@ class FieldValueCopierWidget extends Widget
 
             $utils = System::getContainer()->get(Utils::class);
 
-            Controller::redirect($utils->url()->removeQueryStringParameterFromUrl(['fieldName','fieldValue']));
+            Controller::redirect($utils->url()->removeQueryStringParameterFromUrl(['fieldName', 'fieldValue']));
         }
 
         $arrField = [
-            'exclude'   => true,
+            'exclude' => true,
             'inputType' => 'select',
-            'eval'      => ['tl_class' => 'long', 'chosen' => true, 'includeBlankOption' => true],
+            'eval' => [
+                'tl_class' => 'long',
+                'chosen' => true,
+                'includeBlankOption' => true,
+            ],
         ];
 
         $arrField['label'][0] = sprintf(

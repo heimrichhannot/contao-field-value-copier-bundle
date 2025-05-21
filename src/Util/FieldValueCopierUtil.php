@@ -9,23 +9,19 @@
 namespace HeimrichHannot\FieldValueCopierBundle\Util;
 
 use Contao\DataContainer;
-use Exception;
 
 class FieldValueCopierUtil
 {
     protected ModelInstanceChoicePolyfill $modelInstanceChoicePolyfill;
 
     public function __construct(
-        ModelInstanceChoicePolyfill $modelInstanceChoicePolyfill
-    )
-    {
+        ModelInstanceChoicePolyfill $modelInstanceChoicePolyfill,
+    ) {
         $this->modelInstanceChoicePolyfill = $modelInstanceChoicePolyfill;
     }
 
     /**
-     * @throws Exception
-     *
-     * @return array
+     * @throws \Exception
      */
     public function getOptions(DataContainer $dc): array
     {
@@ -36,7 +32,7 @@ class FieldValueCopierUtil
         $dca = $GLOBALS['TL_DCA'][$table]['fields'][$dc->field];
 
         if (!isset($dca['eval']['fieldValueCopier']['table'])) {
-            throw new Exception("No 'table' set in $dc->table.$dc->field's eval array.");
+            throw new \Exception("No 'table' set in $dc->table.$dc->field's eval array.");
         }
 
         $config = [

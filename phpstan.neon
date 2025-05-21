@@ -1,0 +1,11 @@
+parameters:
+  level: 2
+  paths:
+    - src
+#    - contao
+  universalObjectCratesClasses:
+    - Contao\BackendTemplate
+#    - Contao\Model
+#    - Contao\Template
+includes:
+  - vendor/phpstan/phpstan-symfony/extension.neon

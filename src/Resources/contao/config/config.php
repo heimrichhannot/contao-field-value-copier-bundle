@@ -1,6 +1,8 @@
 <?php
 
-/**
+use HeimrichHannot\FieldValueCopierBundle\Widget\FieldValueCopierWidget;
+
+/*
  * ## Backend form fields
  */
-$GLOBALS['BE_FFL']['fieldValueCopier'] = 'HeimrichHannot\FieldValueCopierBundle\Widget\FieldValueCopierWidget';
+$GLOBALS['BE_FFL']['fieldValueCopier'] = FieldValueCopierWidget::class;

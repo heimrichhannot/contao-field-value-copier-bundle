@@ -5,14 +5,13 @@ namespace HeimrichHannot\FieldValueCopierBundle\Util;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\DC_Table;
 use Contao\System;
-use DateInterval;
 use HeimrichHannot\UtilsBundle\Util\Utils;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class ModelInstanceChoicePolyfill
 {
-    const TITLE_FIELDS = [
+    public const TITLE_FIELDS = [
         'name',
         'title',
         'headline',
@@ -37,14 +36,9 @@ class ModelInstanceChoicePolyfill
 
     /**
      * Current context.
-     *
-     * @var mixed
      */
     protected $context;
 
-    /**
-     * @var ContaoFramework
-     */
     protected ContaoFramework $framework;
 
     public function __construct(ContaoFramework $framework)
@@ -52,17 +46,11 @@ class ModelInstanceChoicePolyfill
         $this->framework = $framework;
     }
 
-    /**
-     * @return mixed
-     */
     public function getContext()
     {
         return $this->context;
     }
 
-    /**
-     * @param mixed $context
-     */
     public function setContext($context)
     {
         $this->context = $context;
@@ -100,16 +88,15 @@ class ModelInstanceChoicePolyfill
 
         // disable cache while in debug mode or backend
         if (true === System::getContainer()->getParameter('kernel.debug')
-            || System::getContainer()->get(Utils::class)->container()->isBackend())
-        {
+            || System::getContainer()->get(Utils::class)->container()->isBackend()) {
             return $this->getChoices($this->getContext());
         }
 
-        $this->cacheKey = 'choice.'.preg_replace('#Choice$#', '', (new \ReflectionClass($this))->getShortName());
+        $this->cacheKey = 'choice.' . preg_replace('#Choice$#', '', (new \ReflectionClass($this))->getShortName());
 
         // add unique identifier based on context
         if (null !== $this->getContext() && false !== ($json = json_encode($this->getContext(), \JSON_FORCE_OBJECT))) {
-            $this->cacheKey .= '.'.sha1($json);
+            $this->cacheKey .= '.' . sha1($json);
         }
 
         if (!$this->cache) {
@@ -126,7 +113,7 @@ class ModelInstanceChoicePolyfill
             }
 
             // TODO: clear cache on delegated field save_callback
-            $cache->expiresAfter(DateInterval::createFromDateString('4 hour'));
+            $cache->expiresAfter(\DateInterval::createFromDateString('4 hour'));
             $cache->set($choices);
 
             $this->cache->save($cache);
@@ -135,9 +122,6 @@ class ModelInstanceChoicePolyfill
         return $cache->get();
     }
 
-    /**
-     * @return array
-     */
     protected function collect(): array
     {
         $context = $this->getContext();
@@ -170,7 +154,7 @@ class ModelInstanceChoicePolyfill
                     default:
                         foreach (static::TITLE_FIELDS as $titleField) {
                             if (isset($GLOBALS['TL_DCA'][$context['dataContainer']]['fields'][$titleField])) {
-                                $labelPattern = '%'.$titleField.'% (ID %id%)';
+                                $labelPattern = '%' . $titleField . '% (ID %id%)';
 
                                 break;
                             }
@@ -184,25 +168,22 @@ class ModelInstanceChoicePolyfill
 
             if (!$skipFormatting) {
                 $dca = &$GLOBALS['TL_DCA']['tl_submission'];
-                # note: originally new \HeimrichHannot\UtilsBundle\Driver\DC_Table_Utils(...);
+                // note: originally new \HeimrichHannot\UtilsBundle\Driver\DC_Table_Utils(...);
                 $dc = new DC_Table($context['dataContainer']);
                 $dc->id = $instances->id;
+                /* @phpstan-ignore property.notFound */
                 $dc->activeRecord = $instances->current();
 
                 $label = preg_replace_callback(
                     '@%([^%]+)%@i',
-                    function ($matches) use ($instances, $dca, $context, $dc) {
-                        return System::getContainer()->get(Utils::class)->formatter()
-                            ->formatDcaFieldValue($dc, $matches[1], $instances->{$matches[1]});
-                    },
+                    fn ($matches) => System::getContainer()->get(Utils::class)->formatter()
+                        ->formatDcaFieldValue($dc, $matches[1], $instances->{$matches[1]}),
                     $labelPattern
                 );
             } else {
                 $label = preg_replace_callback(
                     '@%([^%]+)%@i',
-                    function ($matches) use ($instances) {
-                        return $instances->{$matches[1]};
-                    },
+                    fn ($matches) => $instances->{$matches[1]},
                     $labelPattern
                 );
             }
