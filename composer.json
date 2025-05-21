@@ -4,32 +4,27 @@
   "description": "This simple module offers a backend dca input type for showing a giving the user the opportunity to copy a certain dca's field value from one record to another in Contao CMS.",
   "license": "LGPL-3.0-or-later",
   "require": {
-    "php": "^7.1||^8.0",
-    "contao/core-bundle": "^4.4",
-    "heimrichhannot/contao-utils-bundle": "^2.95"
+    "php": "^7.4 || ^8.0",
+    "contao/core-bundle": "^4.13 || ^5.0",
+    "heimrichhannot/contao-utils-bundle": "^2.242 || ^3.8"
   },
   "autoload": {
     "psr-4": {
       "HeimrichHannot\\FieldValueCopierBundle\\": "src/"
-    },
-    "classmap": [
-      "src/"
-    ],
-    "exclude-from-classmap": [
-      "src/Resources/contao/config/",
-      "src/Resources/contao/dca/",
-      "src/Resources/contao/languages/",
-      "src/Resources/contao/templates/"
-    ]
-  },
-  "config": {
-    "preferred-install": "dist"
+    }
   },
   "replace": {
     "heimrichhannot/contao-field_value_copier": "*"
   },
   "extra": {
-    "contao-manager-plugin": "HeimrichHannot\\FieldValueCopierBundle\\ContaoManager\\Plugin",
-    "foxy": true
+    "contao-manager-plugin": "HeimrichHannot\\FieldValueCopierBundle\\ContaoManager\\Plugin"
+  },
+  "require-dev": {
+    "rector/rector": "^2.0",
+    "contao/contao-rector": "dev-main",
+    "symplify/easy-coding-standard": "^12.5",
+    "phpstan/phpstan": "^2.1",
+    "phpstan/phpstan-symfony": "^2.0",
+    "contao/manager-plugin": "^2.13"
   }
 }

@@ -9,28 +9,23 @@
 namespace HeimrichHannot\FieldValueCopierBundle\Util;
 
 use Contao\DataContainer;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FieldValueCopierUtil
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    protected ModelInstanceChoicePolyfill $modelInstanceChoicePolyfill;
 
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        ModelInstanceChoicePolyfill $modelInstanceChoicePolyfill,
+    ) {
+        $this->modelInstanceChoicePolyfill = $modelInstanceChoicePolyfill;
     }
 
     /**
      * @throws \Exception
-     *
-     * @return array
      */
-    public function getOptions(DataContainer $dc)
+    public function getOptions(DataContainer $dc): array
     {
-        if (!($table = $dc->table) || !($field = $dc->field)) {
+        if (!($table = $dc->table) || !$dc->field) {
             return [];
         }
 
@@ -46,7 +41,7 @@ class FieldValueCopierUtil
 
         $config += $dca['eval']['fieldValueCopier']['config'] ?: [];
 
-        $options = $this->container->get('huh.utils.choice.model_instance')->getChoices($config);
+        $options = $this->modelInstanceChoicePolyfill->getChoices($config);
 
         // remove the item itself
         unset($options[$dc->id]);
