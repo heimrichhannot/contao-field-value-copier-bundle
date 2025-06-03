@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.4.1] - 2025-06-03
+- Fixed: incompatibility with utils v2
+
 ## [1.4.0] - 2025-05-21
 - Added: support for contao 5
 
