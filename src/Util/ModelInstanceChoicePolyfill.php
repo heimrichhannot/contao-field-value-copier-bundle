@@ -2,6 +2,7 @@
 
 namespace HeimrichHannot\FieldValueCopierBundle\Util;
 
+use Contao\Controller;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\DC_Table;
 use Contao\System;
@@ -127,7 +128,8 @@ class ModelInstanceChoicePolyfill
         $context = $this->getContext();
         $choices = [];
 
-        $instances = System::getContainer()->get(Utils::class)->model()
+        $utils = System::getContainer()->get(Utils::class);
+        $instances = $utils->model()
             ->findModelInstancesBy(
                 $context['dataContainer'],
                 $context['columns'] ?? [],
@@ -167,19 +169,30 @@ class ModelInstanceChoicePolyfill
             $skipFormatting = $context['skipFormatting'] ?? false;
 
             if (!$skipFormatting) {
-                $dca = &$GLOBALS['TL_DCA']['tl_submission'];
-                // note: originally new \HeimrichHannot\UtilsBundle\Driver\DC_Table_Utils(...);
-                $dc = new DC_Table($context['dataContainer']);
-                $dc->id = $instances->id;
-                /* @phpstan-ignore property.notFound */
-                $dc->activeRecord = $instances->current();
+                if (method_exists($utils, 'formatter')) {
+                    // note: originally new \HeimrichHannot\UtilsBundle\Driver\DC_Table_Utils(...);
+                    $dc = new DC_Table($context['dataContainer']);
+                    $dc->id = $instances->id;
+                    /* @phpstan-ignore property.notFound */
+                    $dc->activeRecord = $instances->current();
+                    $label = preg_replace_callback(
+                        '@%([^%]+)%@i',
+                        fn ($matches) => System::getContainer()->get(Utils::class)->formatter()
+                            ->formatDcaFieldValue($dc, $matches[1], $instances->{$matches[1]}),
+                        $labelPattern
+                    );
+                } else {
+                    // fallback for utils v2
+                    Controller::loadDataContainer($context['dataContainer']);
+                    Controller::loadLanguageFile($context['dataContainer']);
+                    $label = preg_replace_callback(
+                        '@%([^%]+)%@i',
+                        fn($matches) => $GLOBALS['TL_DCA'][$context['dataContainer']]['fields'][$matches[1]]['label'][0] ?? $matches[1],
+                        $labelPattern
+                    );
+                }
 
-                $label = preg_replace_callback(
-                    '@%([^%]+)%@i',
-                    fn ($matches) => System::getContainer()->get(Utils::class)->formatter()
-                        ->formatDcaFieldValue($dc, $matches[1], $instances->{$matches[1]}),
-                    $labelPattern
-                );
+                
             } else {
                 $label = preg_replace_callback(
                     '@%([^%]+)%@i',
@@ -188,7 +201,6 @@ class ModelInstanceChoicePolyfill
                 );
             }
 
-            $utils = System::getContainer()->get(Utils::class);
             $label = $context['label']
                 ?? $utils->dca()->executeCallback($context['label_callback'] ?? null, [$label, $instances->row(), $context])
                 ?? $label;
