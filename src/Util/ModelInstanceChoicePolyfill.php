@@ -187,12 +187,10 @@ class ModelInstanceChoicePolyfill
                     Controller::loadLanguageFile($context['dataContainer']);
                     $label = preg_replace_callback(
                         '@%([^%]+)%@i',
-                        fn($matches) => $GLOBALS['TL_DCA'][$context['dataContainer']]['fields'][$matches[1]]['label'][0] ?? $matches[1],
+                        fn ($matches) => $GLOBALS['TL_DCA'][$context['dataContainer']]['fields'][$matches[1]]['label'][0] ?? $matches[1],
                         $labelPattern
                     );
                 }
-
-                
             } else {
                 $label = preg_replace_callback(
                     '@%([^%]+)%@i',
