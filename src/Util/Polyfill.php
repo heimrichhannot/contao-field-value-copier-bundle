@@ -36,7 +36,7 @@ class Polyfill
         ?array $value = null,
         string $dbField = '',
         string $table = '',
-        $dataContainer = null,
+        $dataContainer = null
     ): ?Widget {
         $strClass = $GLOBALS['BE_FFL'][$dca['inputType']];
         if (!$strClass) {
