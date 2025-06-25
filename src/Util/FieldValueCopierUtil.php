@@ -15,7 +15,7 @@ class FieldValueCopierUtil
     protected ModelInstanceChoicePolyfill $modelInstanceChoicePolyfill;
 
     public function __construct(
-        ModelInstanceChoicePolyfill $modelInstanceChoicePolyfill,
+        ModelInstanceChoicePolyfill $modelInstanceChoicePolyfill
     ) {
         $this->modelInstanceChoicePolyfill = $modelInstanceChoicePolyfill;
     }
