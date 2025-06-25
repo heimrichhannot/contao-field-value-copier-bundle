@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.4.2] - 2025-06-25
+- Fixed: php7.4 incompatibility
+
 ## [1.4.1] - 2025-06-03
 - Fixed: incompatibility with utils v2
 
